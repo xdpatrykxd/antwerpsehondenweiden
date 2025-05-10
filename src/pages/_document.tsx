@@ -1,9 +1,5 @@
 import { Metadata } from "next";
 import { Html, Head, Main, NextScript } from "next/document";
-export const metadata: Metadata = {
-  title: "Antwerpse Hondenweiden",
-  description: "Find the best off-leash dog areas in and around Antwerp",
-}
 export default function Document() {
   return (
     <Html lang="en">
