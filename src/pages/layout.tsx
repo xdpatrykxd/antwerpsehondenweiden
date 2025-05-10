@@ -1,13 +1,19 @@
-import { Metadata } from "next";
-import { Html, Head, Main, NextScript } from "next/document";
+import type React from "react"
+import type { Metadata } from "next"
+import "./globals.css"
+
 export const metadata: Metadata = {
   title: "Antwerpse Hondenweiden",
   description: "Find the best off-leash dog areas in and around Antwerp",
 }
-export default function Document() {
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   return (
-    <Html lang="en">
-      <Head />
+    <html lang="en">
       <body>
         <header>
           <nav className="navbar">
@@ -24,9 +30,11 @@ export default function Document() {
             </ul>
           </nav>
         </header>
-        <Main />
-        <NextScript />
+        {children}
+        <footer>
+          <p>&copy; {new Date().getFullYear()} Antwerpse Hondenweiden. All rights reserved.</p>
+        </footer>
       </body>
-    </Html>
-  );
+    </html>
+  )
 }
