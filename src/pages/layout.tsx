@@ -1,12 +1,6 @@
 import type React from "react"
 import type { Metadata } from "next"
 import "./globals.css"
-
-export const metadata: Metadata = {
-  title: "Antwerpse Hondenweiden",
-  description: "Find the best off-leash dog areas in and around Antwerp",
-}
-
 export default function RootLayout({
   children,
 }: {
