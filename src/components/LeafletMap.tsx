@@ -22,7 +22,7 @@ interface DogPark {
   hasWaterFountain: boolean;
   waterFountainDetail: string;
   hasWaterPool: boolean;
-  hasParcourObstacles: boolean;
+  hasParkourObstacles: boolean;
   hasEveningLight: boolean;
   isFenced: boolean;
   fenceDetail: string;
@@ -66,7 +66,7 @@ const parseDogParkMarkers = (parks: DogPark[]): MarkerData[] => {
         park.hasWaterPool && "Waterspeelzone",
         park.hasShade && "Schaduw",
         park.hasTrashbin && "Vuilnisbak",
-        park.hasParcourObstacles && "Parcours obstakels",
+        park.hasParkourObstacles && "Parcours obstakels",
         park.hasEveningLight && "Verlichting",
         park.isFenced && `Afgesloten (${park.fenceDetail})`,
         park.benchCount > 0 && `${park.benchCount} zitbanken`,
@@ -84,12 +84,38 @@ const parseDogParkMarkers = (parks: DogPark[]): MarkerData[] => {
       };
     });
 };
+const normalizeParksData = (data: any[]): DogPark[] => {
+  return data.map((p) => ({
+    area: p.area ?? "",
+    dogParkName: p.dogParkName ?? null,
+    address: p.address ?? "Onbekend adres",
+    location: {
+      latitude: p.location?.latitude ?? 0,
+      longitude: p.location?.longitude ?? 0,
+    },
+    size: p.size ?? "Onbekend",
+    benchCount: typeof p.benchCount === "number" ? p.benchCount : 0,
+    hasShade: !!p.hasShade,
+    hasTrashbin: !!p.hasTrashbin,
+    hasWaterFountain: !!p.hasWaterFountain,
+    waterFountainDetail: p.waterFountainDetail ?? "",
+    hasWaterPool: !!p.hasWaterPool,
+    hasParkourObstacles: !!p.hasParkourObstacles,
+    hasEveningLight: !!p.hasEveningLight,
+    isFenced: !!p.isFenced,
+    fenceDetail: p.fenceDetail ?? "",
+    groundTypes: Array.isArray(p.groundTypes) ? p.groundTypes : [],
+    reviews: Array.isArray(p.reviews) ? p.reviews : [],
+    rating: typeof p.rating === "number" ? p.rating : 0,
+    extraInfo: p.extraInfo ?? "",
+  }));
+};
 
 const LeafletMap: React.FC = () => {
   const [markers, setMarkers] = useState<MarkerData[]>([]);
 
   useEffect(() => {
-    const parsed = parseDogParkMarkers(parksData);
+    const parsed = parseDogParkMarkers(normalizeParksData(parksData));
     setMarkers(parsed);
   }, []);
 
