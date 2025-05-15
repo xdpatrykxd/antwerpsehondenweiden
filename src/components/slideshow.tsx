@@ -9,6 +9,7 @@ interface SlideshowProps {
     alt: string
     caption?: string
   }[]
+  
   autoPlay?: boolean
   interval?: number
 }
