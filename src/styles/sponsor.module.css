@@ -1,26 +1,65 @@
+/* =======================
+   Base Layout
+   ======================= */
+
 .main {
-  display: flex;
-  flex-direction: column;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
+  padding-top: 20px;
+  min-height: 93.5vh;
+  font-family: system-ui, sans-serif;
+  background-color: var(--light-bg);
+  color: var(--text-color);
+  padding-bottom: 4rem;
 }
 
+/* =======================
+   Intro Section
+   ======================= */
+
 .intro {
-  margin-bottom: 2rem;
+  max-width: 800px;
+  margin: 0 auto 3rem;
   text-align: center;
+  padding: 0 1.5rem;
+}
+
+.intro h1 {
+  font-size: 2.25rem;
+  margin-bottom: 1rem;
+  color: var(--primary-color);
 }
 
 .intro p {
-  max-width: 800px;
-  margin: 0 auto;
-  line-height: 1.6;
+  font-size: 1.125rem;
+  line-height: 1.7;
+  color: var(--text-color);
 }
+
+/* =======================
+   Sponsors Section
+   ======================= */
 
 .sponsorsSection,
 .productsSection {
-  margin-bottom: 3rem;
+  max-width: 1200px;
+  margin: 3rem auto;
+  padding: 2rem;
+  background-color: var(--white);
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--border-color);
+  text-align: center;
 }
+
+.sponsorsSection h2,
+.productsSection h2 {
+  font-size: 1.75rem;
+  color: var(--primary-color);
+  margin-bottom: 1.5rem;
+}
+
+/* =======================
+   Sponsors Grid
+   ======================= */
 
 .sponsorGrid {
   display: grid;
@@ -30,23 +69,35 @@
 }
 
 .sponsorCard {
+  background: var(--light-bg);
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 1.5rem;
-  border: 1px solid #eaeaea;
-  border-radius: 8px;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .sponsorCard:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-  text-decoration: none;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
 }
 
 .sponsorLogo {
   margin-bottom: 1rem;
+}
+
+/* =======================
+   Products Section
+   ======================= */
+
+.productsSection p {
+  max-width: 700px;
+  margin: 0 auto;
+  font-size: 1rem;
+  color: var(--text-color);
+  line-height: 1.6;
 }
 
 .productGrid {
@@ -57,33 +108,54 @@
 }
 
 .productCard {
+  background: var(--light-bg);
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;
-  padding: 1.5rem;
-  border: 1px solid #eaeaea;
-  border-radius: 8px;
-  transition: transform 0.2s, box-shadow 0.2s;
+  align-items: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .productCard:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-  text-decoration: none;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
 }
 
 .productImage {
   margin-bottom: 1rem;
-  border-radius: 4px;
+  border-radius: 8px;
 }
 
 .price {
-  font-weight: bold;
+  font-weight: 600;
   color: #4a6741;
+  margin-top: 0.5rem;
 }
 
+/* =======================
+   Responsive Layout
+   ======================= */
+
 @media (max-width: 768px) {
-  .sponsorGrid,
-  .productGrid {
+  .intro h1 {
+    font-size: 1.75rem;
+  }
+
+  .sponsorsSection h2,
+  .productsSection h2 {
+    font-size: 1.5rem;
+  }
+
+  .sponsorsSection,
+  .productsSection {
+    padding: 1.5rem;
+    margin: 2rem 1rem;
+  }
+
+  .productGrid,
+  .sponsorGrid {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   }
 }

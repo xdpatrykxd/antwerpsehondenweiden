@@ -1,0 +1,21 @@
+/* styles/Footer.module.css */
+
+.footer {
+  text-align: center;
+  margin-top: 2rem;
+  padding: 1.5rem 1rem;
+  background-color: var(--light-bg);
+  color: var(--text-color);
+  border-top: 1px solid var(--border-color);
+  font-size: 1rem;
+}
+
+.footer a {
+  color: var(--primary-color);
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.footer a:hover {
+  color: var(--accent-color);
+}

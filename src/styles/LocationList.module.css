@@ -1,0 +1,143 @@
+/* =======================
+   Menu Container
+   ======================= */
+
+.topMenu {
+  background-color: var(--white);
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  padding: 1rem 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+/* =======================
+   Location Tabs
+   ======================= */
+
+.locationTabs {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.tabButton {
+  background-color: var(--light-bg);
+  border: 1px solid var(--border-color);
+  padding: 0.5rem 1.25rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--text-color);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tabButton:hover {
+  background-color: var(--white);
+  color: black;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.activeTab {
+  background-color: var(--accent-color);
+  color: var(--white);
+  border-color: var(--accent-color);
+}
+
+/* =======================
+   Zones Under Location
+   ======================= */
+
+.zonesWrapper {
+  margin-top: 0.5rem;
+}
+
+.zonesLabel {
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.zoneButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.zoneButton {
+  background-color: var(--light-bg);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s, box-shadow 0.2s;
+}
+
+.zoneButton:hover {
+  background-color: var(--white);
+   color: black;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.04);
+}
+
+.activeZone {
+  background-color: var(--primary-color);
+  color: var(--white);
+  border-color: var(--primary-color);
+}
+
+/* =======================
+   Content Area
+   ======================= */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--light-bg);
+  font-family: system-ui, sans-serif;
+}
+
+.content {
+  padding: 2rem;
+  background-color: var(--white);
+  margin-top: 1rem;
+}
+
+/* =======================
+   Zone Grid
+   ======================= */
+
+.zoneContent {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.zoneTitle {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: var(--primary-color);
+}
+
+.zoneGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+  gap: 2rem;
+}
+
+/* =======================
+   Empty State
+   ======================= */
+
+.emptyState {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--text-color);
+  font-style: italic;
+}

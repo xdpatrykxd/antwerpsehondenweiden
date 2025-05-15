@@ -12,7 +12,10 @@ export default function Document() {
             </div>
             <ul className="nav-links">
               <li>
-                <a href="/">Home</a>
+                <a href="/locations">Locaties</a>
+              </li>
+              <li>
+                <a href="/map">Kaart</a>
               </li>
               <li>
                 <a href="/sponsors">Sponsors</a>

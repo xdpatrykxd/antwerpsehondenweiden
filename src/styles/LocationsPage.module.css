@@ -4,6 +4,7 @@
 
 .main {
   padding-top: 20px;
+  min-height: 93.5vh;
   font-family: system-ui, sans-serif;
   background-color: var(--light-bg);
   color: var(--text-color);
@@ -11,72 +12,24 @@
 }
 
 /* =======================
-   Intro Section
+   Location Section
    ======================= */
 
-.intro {
-  max-width: 900px;
-  margin: 1rem auto 1rem;
+.locationsSection {
+  max-width: 1200px;
+  margin: 3rem auto;
   padding: 2rem;
-  background-color: var(--white);
-  border: 1px solid var(--border-color);
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
-  text-align: center;
-}
-
-.intro h1 {
-  font-size: 2.2rem;
-  color: var(--primary-color);
-  margin-bottom: 1rem;
-}
-
-.introText {
-  font-size: 1.1rem;
-  line-height: 1.6;
-  color: var(--text-color);
-}
-
-/* =======================
-   Slideshow Section
-   ======================= */
-
-.slideshowSection {
-  max-width: 1000px;
-  margin: 2rem auto;
-  padding: 1rem;
   background-color: var(--white);
   border-radius: 16px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   border: 1px solid var(--border-color);
 }
 
-
-/* =======================
-   Contact Section (commented)
-   ======================= */
-
-.contactSection {
-  max-width: 800px;
-  margin: 3rem auto;
-  padding: 2rem;
-  background-color: var(--white);
-  border: 1px solid var(--border-color);
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
-}
-
-.contactSection h2 {
+.locationsSection h2 {
+  font-size: 1.75rem;
   color: var(--primary-color);
-  font-size: 1.5rem;
-  margin-bottom: 0.75rem;
-}
-
-.contactSection p {
   margin-bottom: 1.5rem;
-  color: var(--text-color);
 }
-
 /* =======================
    Sponsor Link
    ======================= */
