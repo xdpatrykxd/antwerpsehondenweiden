@@ -1,4 +1,4 @@
-import { Slideshow } from "@/components/SlideShow"
+import { Slideshow } from "@/components/Slideshow"
 import styles from "../styles/Home.module.css"
 import { Footer } from "@/components/Footer"
 
