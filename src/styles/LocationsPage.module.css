@@ -16,13 +16,15 @@
    ======================= */
 
 .locationsSection {
+  width: 100%;
   max-width: 1200px;
-  margin: 3rem auto;
+  margin: 2rem auto;
   padding: 2rem;
   background-color: var(--white);
   border-radius: 16px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   border: 1px solid var(--border-color);
+  transition: padding 0.3s ease, margin 0.3s ease;
 }
 
 .locationsSection h2 {
@@ -30,6 +32,7 @@
   color: var(--primary-color);
   margin-bottom: 1.5rem;
 }
+
 /* =======================
    Sponsor Link
    ======================= */
@@ -53,43 +56,49 @@
 }
 
 /* =======================
-   Filter Layout
-   ======================= */
-
-.filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin-top: 1rem;
-}
-
-.filterCheckbox {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.9rem;
-}
-
-
-
-/* =======================
    Responsive Layout
    ======================= */
 
-@media (max-width: 768px) {
-  .intro,
-  .slideshowSection,
-  .locationsSection,
-  .contactSection {
-    padding: 1.25rem;
-    border-radius: 12px;
-  }
-
-  .intro h1 {
-    font-size: 1.75rem;
+@media (max-width: 1024px) {
+  .locationsSection {
+    padding: 1.5rem;
+    margin: 2rem 1rem;
   }
 
   .locationsSection h2 {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .main {
+    padding-top: 16px;
+    padding-bottom: 3rem;
+  }
+
+  .locationsSection {
+    padding: 1.25rem;
+    margin: 1.5rem 1rem;
+    border-radius: 12px;
+  }
+
+  .locationsSection h2 {
+    font-size: 1.4rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .locationsSection {
+    padding: 1rem;
+    margin: 1rem 0.75rem;
+    border-radius: 10px;
+  }
+
+  .locationsSection h2 {
+    font-size: 1.25rem;
+  }
+
+  .sponsorLink {
+    font-size: 0.85rem;
   }
 }
