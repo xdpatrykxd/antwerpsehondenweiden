@@ -130,6 +130,46 @@
   grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
   gap: 2rem;
 }
+/* =======================
+   Filter Layout
+   ======================= */
+
+/* =======================
+   Filter Layout - Clean & Modern
+   ======================= */
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  padding: 0.75rem;
+  background-color: #f9f9f9;
+  border-radius: 0.5rem;
+  border: 1px solid #e0e0e0;
+}
+
+.filterCheckbox {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.75rem;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.filterCheckbox:hover {
+  background-color: #f0f0f0;
+  border-color: #bbb;
+}
+
+.filterCheckbox input {
+  accent-color: #0070f3;
+}
 
 /* =======================
    Empty State
