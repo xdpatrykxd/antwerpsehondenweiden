@@ -1,8 +1,7 @@
 "use client"
-
 import { useState, useEffect, useCallback } from "react"
 import Image from "next/image"
-import styles from "../styles/slideshow.module.css"
+import styles from "../styles/Slideshow.module.css"
 
 interface SlideshowProps {
   images: {
