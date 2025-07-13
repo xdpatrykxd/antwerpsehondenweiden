@@ -133,3 +133,25 @@
   font-style: italic;
   color: #777;
 }
+/* Responsive adjustments for mobile screens */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    padding: 1rem;
+  }
+
+  .leftColumn,
+  .rightColumn {
+    width: 100%;
+    padding-left: 0;
+  }
+
+  .rightColumn {
+    margin-top: 1.5rem;
+  }
+
+  .image,
+  .pastureMap {
+    max-width: 100%;
+  }
+}
