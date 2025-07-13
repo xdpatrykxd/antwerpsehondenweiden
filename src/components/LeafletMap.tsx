@@ -1,10 +1,11 @@
-'use client';
+"use client";
 
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import 'leaflet/dist/leaflet.css';
-import L from 'leaflet';
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+import L from "leaflet";
 import styles from "@/styles/Maps.module.css";
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
+import Link from "next/link";
 
 interface Pasture {
   area: string;
@@ -55,7 +56,7 @@ const getIcon = (type: string) =>
   });
 
 const parsePastureMarkers = (pastures: Pasture[]): MarkerData[] => {
-  const icon = getIcon('pastures');
+  const icon = getIcon("pastures");
 
   return pastures
     .filter((p) => p.location?.latitude && p.location?.longitude)
@@ -122,7 +123,7 @@ const LeafletMap: React.FC = () => {
         setLoading(true);
         setError(null);
 
-        const response = await fetch('/api/pastures');
+        const response = await fetch("/api/pastures");
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -132,7 +133,7 @@ const LeafletMap: React.FC = () => {
         const parsedMarkers = parsePastureMarkers(normalized);
         setMarkers(parsedMarkers);
       } catch (err: any) {
-        setError(err.message || 'Unknown error');
+        setError(err.message || "Unknown error");
       } finally {
         setLoading(false);
       }
@@ -148,18 +149,40 @@ const LeafletMap: React.FC = () => {
     <MapContainer center={[51.2194, 4.4025]} zoom={12} className={styles.map}>
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
-        url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      {markers.map(({ id, label, position, icon, address, rating, amenities }) => (
-        <Marker key={id} position={position} icon={icon} title={label}>
-          <Popup>
-            <strong>{label}</strong><br />
-            {address}<br />
-            Beoordeling: {rating.toFixed(1)}<br />
-            Voorzieningen: {amenities.join(', ')}
-          </Popup>
-        </Marker>
-      ))}
+      {markers.map(
+        ({ id, label, position, icon, address, rating, amenities }) => (
+          <Marker key={id} position={position} icon={icon} title={label}>
+            <Popup>
+              <strong>{label}</strong>
+              <br />
+              {address}
+              <br />
+              Beoordeling: {rating.toFixed(1)}
+              <br />
+              Voorzieningen: {amenities.join(", ")}
+              <Link href={`/details/${id}`} passHref>
+                <a
+                  className={styles.popupLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    marginTop: "0.5rem",
+                    display: "inline-block",
+                    color: "#0070f3",
+                    fontWeight: "bold",
+                    textDecoration: "underline",
+                    cursor: "pointer",
+                  }}
+                >
+                  Bekijk details
+                </a>
+              </Link>
+            </Popup>
+          </Marker>
+        )
+      )}
     </MapContainer>
   );
 };
