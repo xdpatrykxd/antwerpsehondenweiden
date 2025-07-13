@@ -162,23 +162,10 @@ const LeafletMap: React.FC = () => {
               Beoordeling: {rating.toFixed(1)}
               <br />
               Voorzieningen: {amenities.join(", ")}
-              <Link href={`/details/${id}`} passHref>
-                <a
-                  className={styles.popupLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    marginTop: "0.5rem",
-                    display: "inline-block",
-                    color: "#0070f3",
-                    fontWeight: "bold",
-                    textDecoration: "underline",
-                    cursor: "pointer",
-                  }}
-                >
-                  Bekijk details
-                </a>
-              </Link>
+              <Link href={`/details/${id}`} target="_blank" rel="noopener noreferrer" className={styles.popupLink}>
+  Bekijk details
+</Link>
+
             </Popup>
           </Marker>
         )
