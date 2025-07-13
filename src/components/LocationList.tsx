@@ -1,13 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ZoneCard } from "./ZoneCard";
 import styles from "../styles/LocationList.module.css";
-import dogParksRaw from "../data/pastures.json";
 
-interface DogPark {
+interface Review {
+  id: number;
+  user: string;
+  text: string;
+  rating: number;
+}
+
+interface Pasture {
+  _id?: string;
   area: string;
-  dogParkName: string | null;
+  image: string;
+  dogParkName: string;
   address: string;
   location: {
     latitude: number;
@@ -20,80 +28,97 @@ interface DogPark {
   hasWaterFountain: boolean;
   waterFountainDetail: string;
   hasWaterPool: boolean;
-  hasParcourObstacles: boolean;
+  hasParkourObstacles: boolean;
   hasEveningLight: boolean;
   isFenced: boolean;
   fenceDetail: string;
   groundTypes: string[];
-  reviews: any[];
+  reviews: Review[];
   rating: number;
   extraInfo: string;
 }
 
-// Normalize parks
-const normalizedParks: DogPark[] = (dogParksRaw as any[]).map((park) => ({
-  area: park.area || "Onbekend",
-  dogParkName: park.dogParkName ?? null,
-  address: park.address || "Onbekend adres",
-  location: {
-    latitude: park.location?.latitude ?? 0,
-    longitude: park.location?.longitude ?? 0,
-  },
-  size: park.size || "Unknown",
-  benchCount: park.benchCount ?? 0,
-  hasShade: !!park.hasShade,
-  hasTrashbin: !!park.hasTrashbin,
-  hasWaterFountain: !!park.hasWaterFountain,
-  waterFountainDetail: park.waterFountainDetail ?? "",
-  hasWaterPool: !!park.hasWaterPool,
-  hasParcourObstacles: !!park.hasParcourObstacles,
-  hasEveningLight: !!park.hasEveningLight,
-  isFenced: !!park.isFenced,
-  fenceDetail: park.fenceDetail ?? "",
-  groundTypes: park.groundTypes ?? [],
-  reviews: park.reviews ?? [],
-  rating: park.rating ?? 0,
-  extraInfo: park.extraInfo ?? "",
-}));
-
-// Group by area
-const groupedByArea: Record<string, DogPark[]> = {};
-normalizedParks.forEach((park) => {
-  if (!groupedByArea[park.area]) groupedByArea[park.area] = [];
-  groupedByArea[park.area].push(park);
-});
-
-const areas = ["Alle gebieden", ...Object.keys(groupedByArea)];
-
-// Filter options
 const FILTER_OPTIONS = [
   { key: "isFenced", label: "Afgesloten" },
   { key: "hasWaterPool", label: "Waterspeelzone" },
   { key: "hasShade", label: "Schaduw" },
   { key: "hasTrashbin", label: "Vuilnisbak" },
   { key: "hasWaterFountain", label: "Drinkfontein" },
-  { key: "hasParcourObstacles", label: "Parcours obstakels" },
+  { key: "hasParkourObstacles", label: "Parcours obstakels" },
   { key: "hasEveningLight", label: "Verlichting" },
 ] as const;
 
 type FilterKey = (typeof FILTER_OPTIONS)[number]["key"];
 
 export function LocationList() {
+  const [pasturesRaw, setPasturesRaw] = useState<any[]>([]);
   const [selectedArea, setSelectedArea] = useState<string>("Alle gebieden");
   const [activeFilters, setActiveFilters] = useState<FilterKey[]>([]);
+
+  useEffect(() => {
+    async function fetchPastures() {
+      try {
+        const res = await fetch("/api/pastures");
+        if (!res.ok) throw new Error("Failed to fetch pastures");
+        const data = await res.json();
+        setPasturesRaw(data);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    fetchPastures();
+  }, []);
+
+  // Normalize pastures data
+  const normalizedPastures: Pasture[] = pasturesRaw.map((pasture) => ({
+    _id: pasture._id?.toString() ?? undefined,
+    area: pasture.area || "Onbekend",
+    dogParkName: pasture.dogParkName ?? "Naam onbekend",
+    address: pasture.address || "Onbekend adres",
+    location: {
+      latitude: pasture.location?.latitude ?? 0,
+      longitude: pasture.location?.longitude ?? 0,
+    },
+    size: pasture.size || "Unknown",
+    benchCount: pasture.benchCount ?? 0,
+    hasShade: !!pasture.hasShade,
+    hasTrashbin: !!pasture.hasTrashbin,
+    hasWaterFountain: !!pasture.hasWaterFountain,
+    waterFountainDetail: pasture.waterFountainDetail ?? "",
+    hasWaterPool: !!pasture.hasWaterPool,
+    hasParkourObstacles: !!pasture.hasParkourObstacles,
+    hasEveningLight: !!pasture.hasEveningLight,
+    isFenced: !!pasture.isFenced,
+    fenceDetail: pasture.fenceDetail ?? "",
+    groundTypes: pasture.groundTypes ?? [],
+    reviews: pasture.reviews ?? [],
+    rating: pasture.rating ?? 0,
+    extraInfo: pasture.extraInfo ?? "",
+    image: pasture.image ?? "/placeholder.svg",
+  }));
+
+  // Group by area
+  const groupedByArea: Record<string, Pasture[]> = {};
+  normalizedPastures.forEach((pasture) => {
+    if (!groupedByArea[pasture.area]) groupedByArea[pasture.area] = [];
+    groupedByArea[pasture.area].push(pasture);
+  });
+
+  const areas = ["Alle gebieden", ...Object.keys(groupedByArea)];
 
   const toggleFilter = (key: FilterKey) => {
     setActiveFilters((prev) =>
       prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]
     );
   };
-  const parksInArea =
+
+  const pasturesInArea =
     selectedArea === "Alle gebieden"
-      ? normalizedParks
+      ? normalizedPastures
       : groupedByArea[selectedArea] || [];
 
-  const filteredParks = parksInArea.filter((park) =>
-    activeFilters.every((key) => park[key])
+  const filteredPastures = pasturesInArea.filter((pasture) =>
+    activeFilters.every((key) => pasture[key])
   );
 
   return (
@@ -128,15 +153,15 @@ export function LocationList() {
       </div>
 
       <div className={styles.content}>
-        {filteredParks.length > 0 ? (
+        {filteredPastures.length > 0 ? (
           <div className={styles.zoneContent}>
             <h2 className={styles.zoneTitle}>
               Hondenzones in{" "}
               {selectedArea === "Alle gebieden" ? "alle gebieden" : selectedArea}
             </h2>
             <div className={styles.zoneGrid}>
-              {filteredParks.map((park, index) => (
-                <ZoneCard key={index} zone={park} />
+              {filteredPastures.map((pasture) => (
+                <ZoneCard key={pasture._id || pasture.dogParkName} zone={pasture} />
               ))}
             </div>
           </div>

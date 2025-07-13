@@ -5,9 +5,8 @@ import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import styles from "@/styles/Maps.module.css";
 import { useEffect, useState } from 'react';
-import parksData from '../data/pastures.json'; // New JSON format
 
-interface DogPark {
+interface Pasture {
   area: string;
   dogParkName: string | null;
   address: string;
@@ -55,36 +54,37 @@ const getIcon = (type: string) =>
     popupAnchor: [17.5, -35],
   });
 
-const parseDogParkMarkers = (parks: DogPark[]): MarkerData[] => {
+const parsePastureMarkers = (pastures: Pasture[]): MarkerData[] => {
   const icon = getIcon('pastures');
 
-  return parks
-    .filter((park) => park.location && park.location.latitude && park.location.longitude) // ✅ filter out invalid locations
-    .map((park, idx) => {
+  return pastures
+    .filter((p) => p.location?.latitude && p.location?.longitude)
+    .map((pasture, idx) => {
       const amenities: string[] = [
-        park.hasWaterFountain && "Drinkfontein",
-        park.hasWaterPool && "Waterspeelzone",
-        park.hasShade && "Schaduw",
-        park.hasTrashbin && "Vuilnisbak",
-        park.hasParkourObstacles && "Parcours obstakels",
-        park.hasEveningLight && "Verlichting",
-        park.isFenced && `Afgesloten (${park.fenceDetail})`,
-        park.benchCount > 0 && `${park.benchCount} zitbanken`,
-        ...park.groundTypes.map((type) => `Bodem: ${type}`),
+        pasture.hasWaterFountain && "Drinkfontein",
+        pasture.hasWaterPool && "Waterspeelzone",
+        pasture.hasShade && "Schaduw",
+        pasture.hasTrashbin && "Vuilnisbak",
+        pasture.hasParkourObstacles && "Parcours obstakels",
+        pasture.hasEveningLight && "Verlichting",
+        pasture.isFenced && `Afgesloten (${pasture.fenceDetail})`,
+        pasture.benchCount > 0 && `${pasture.benchCount} zitbanken`,
+        ...pasture.groundTypes.map((type) => `Bodem: ${type}`),
       ].filter(Boolean) as string[];
 
       return {
-        id: `${idx}-${park.address}`,
-        position: [park.location.latitude, park.location.longitude],
-        label: park.dogParkName || "Naam onbekend",
-        address: park.address,
-        rating: park.rating,
+        id: `${idx}-${pasture.address}`,
+        position: [pasture.location.latitude, pasture.location.longitude],
+        label: pasture.dogParkName || "Naam onbekend",
+        address: pasture.address,
+        rating: pasture.rating,
         amenities,
         icon,
       };
     });
 };
-const normalizeParksData = (data: any[]): DogPark[] => {
+
+const normalizePasturesData = (data: any[]): Pasture[] => {
   return data.map((p) => ({
     area: p.area ?? "",
     dogParkName: p.dogParkName ?? null,
@@ -113,11 +113,36 @@ const normalizeParksData = (data: any[]): DogPark[] => {
 
 const LeafletMap: React.FC = () => {
   const [markers, setMarkers] = useState<MarkerData[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const parsed = parseDogParkMarkers(normalizeParksData(parksData));
-    setMarkers(parsed);
+    const fetchPastures = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const response = await fetch('/api/pastures');
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        const normalized = normalizePasturesData(data);
+        const parsedMarkers = parsePastureMarkers(normalized);
+        setMarkers(parsedMarkers);
+      } catch (err: any) {
+        setError(err.message || 'Unknown error');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPastures();
   }, []);
+
+  if (loading) return <p>Loading pastures...</p>;
+  if (error) return <p>Error loading pastures: {error}</p>;
 
   return (
     <MapContainer center={[51.2194, 4.4025]} zoom={12} className={styles.map}>
@@ -126,7 +151,7 @@ const LeafletMap: React.FC = () => {
         url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
       />
       {markers.map(({ id, label, position, icon, address, rating, amenities }) => (
-        <Marker key={id} position={position} icon={icon}>
+        <Marker key={id} position={position} icon={icon} title={label}>
           <Popup>
             <strong>{label}</strong><br />
             {address}<br />

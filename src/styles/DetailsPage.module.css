@@ -1,0 +1,154 @@
+.header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.subInfo {
+  font-size: 1rem;
+  color: var(--text-muted);
+  margin: 0.15rem 0;
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.sectionTitle {
+  font-size: 1.6rem;
+  color: var(--primary-color);
+  margin: 1.75rem 0 1rem;
+  border-bottom: 2px solid var(--accent-color);
+  padding-bottom: 0.3rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.infoTable, .detailsTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+.infoTable th, .detailsTable th {
+  text-align: left;
+  padding: 0.75rem;
+  background-color: var(--accent-color-light);
+  color: var(--primary-color);
+  width: 40%;
+  border: 1px solid var(--border-color);
+  border-radius: 6px 0 0 6px;
+}
+
+.infoTable td, .detailsTable td {
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: 0 6px 6px 0;
+  background-color: var(--background-light);
+}
+
+.extraInfo {
+  background-color: var(--accent-color-light);
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  margin: 1.5rem 0;
+  font-style: italic;
+  font-size: 1.1rem;
+}
+
+.ratingSection {
+  text-align: center;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--highlight-color);
+  margin: 1.5rem 0;
+}
+
+.reviewsList {
+  list-style: none;
+  padding: 0;
+}
+
+.reviewItem {
+  background-color: var(--background-light);
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+}
+
+.reviewHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.reviewAvatar {
+  font-size: 1.5rem;
+}
+
+.reviewUser {
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+.reviewRating {
+  margin-left: auto;
+  color: var(--highlight-color);
+  font-weight: 600;
+}
+
+.reviewText {
+  font-style: italic;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.noReviews {
+  font-style: italic;
+  color: var(--text-muted);
+  text-align: center;
+}
+/* Container now a 2-column grid on desktop */
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 2rem;
+  padding: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Columns */
+.leftColumn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.rightColumn {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+/* Responsive: stack columns on small screens */
+@media (max-width: 768px) {
+  .container {
+    grid-template-columns: 1fr;
+  }
+
+  .leftColumn,
+  .rightColumn {
+    align-items: stretch;
+  }
+
+  .image {
+    width: 100% !important;
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+  }
+}
