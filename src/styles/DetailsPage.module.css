@@ -1,154 +1,135 @@
-.header {
-  text-align: center;
-  margin-bottom: 1.5rem;
+/* DetailsPage.module.css */
+
+.container {
+  display: flex;
+  gap: 2rem;
+  padding: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  box-sizing: border-box;
 }
 
-.subInfo {
-  font-size: 1rem;
-  color: var(--text-muted);
-  margin: 0.15rem 0;
+.leftColumn {
   display: flex;
-  justify-content: center;
-  gap: 0.5rem;
+  flex-direction: column; /* stack header, image, map vertically */
   align-items: center;
+  width: 50%;
+}
+
+.header {
+  width: 100%;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.title {
+  font-size: 2rem;
+  margin: 0;
+}
+
+.image {
+  width: 100%;      /* scale image to column width */
+  max-width: 450px;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  object-fit: cover;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Assuming PastureMap renders a div/map container */
+.pastureMap {
+  width: 100%;
+  max-width: 450px;
+  height: 300px;  /* fixed height for map */
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  margin-bottom: 1rem;
+}
+
+.rightColumn {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding-left: 1rem;
+  box-sizing: border-box;
 }
 
 .sectionTitle {
-  font-size: 1.6rem;
-  color: var(--primary-color);
-  margin: 1.75rem 0 1rem;
-  border-bottom: 2px solid var(--accent-color);
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  border-bottom: 2px solid #ddd;
   padding-bottom: 0.3rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
 }
 
 .infoTable, .detailsTable {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 1rem;
+}
+
+.infoTable p, .infoTable span, .subInfo {
+  margin: 0.2rem 0;
   font-size: 1rem;
 }
 
-.infoTable th, .detailsTable th {
+.detailsTable th, .detailsTable td {
+  padding: 0.5rem;
+  border-bottom: 1px solid #eee;
   text-align: left;
-  padding: 0.75rem;
-  background-color: var(--accent-color-light);
-  color: var(--primary-color);
-  width: 40%;
-  border: 1px solid var(--border-color);
-  border-radius: 6px 0 0 6px;
-}
-
-.infoTable td, .detailsTable td {
-  padding: 0.75rem;
-  border: 1px solid var(--border-color);
-  border-radius: 0 6px 6px 0;
-  background-color: var(--background-light);
+  font-size: 1rem;
 }
 
 .extraInfo {
-  background-color: var(--accent-color-light);
-  padding: 1rem 1.5rem;
-  border-radius: 8px;
-  margin: 1.5rem 0;
-  font-style: italic;
-  font-size: 1.1rem;
+  background-color: #f9f9f9;
+  padding: 1rem;
+  border-radius: 6px;
+  font-size: 1rem;
 }
 
 .ratingSection {
-  text-align: center;
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: var(--highlight-color);
-  margin: 1.5rem 0;
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-top: 1rem;
 }
 
 .reviewsList {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
 .reviewItem {
-  background-color: var(--background-light);
   margin-bottom: 1rem;
-  padding: 1rem;
-  border-radius: 8px;
-  box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #ddd;
 }
 
 .reviewHeader {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 0.5rem;
+  gap: 0.5rem;
+  font-weight: 600;
 }
 
 .reviewAvatar {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
 }
 
 .reviewUser {
-  color: var(--primary-color);
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .reviewRating {
-  margin-left: auto;
-  color: var(--highlight-color);
-  font-weight: 600;
+  color: #999;
 }
 
 .reviewText {
-  font-style: italic;
-  color: var(--text-muted);
-  margin: 0;
+  margin: 0.3rem 0 0 1.7rem;
 }
 
 .noReviews {
   font-style: italic;
-  color: var(--text-muted);
-  text-align: center;
-}
-/* Container now a 2-column grid on desktop */
-.container {
-  display: grid;
-  grid-template-columns: 1fr 1.5fr;
-  gap: 2rem;
-  padding: 1rem;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-/* Columns */
-.leftColumn {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.rightColumn {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-}
-
-/* Responsive: stack columns on small screens */
-@media (max-width: 768px) {
-  .container {
-    grid-template-columns: 1fr;
-  }
-
-  .leftColumn,
-  .rightColumn {
-    align-items: stretch;
-  }
-
-  .image {
-    width: 100% !important;
-    max-width: 100%;
-    height: auto;
-    border-radius: 10px;
-  }
+  color: #777;
 }

@@ -4,7 +4,7 @@
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import styles from '@/styles/Maps.module.css';
+import styles from '../styles/PastureMap.module.css';
 
 interface PastureMapProps {
   latitude: number;
@@ -34,6 +34,7 @@ export default function PastureMap({
   };
 
   return (
+     <div className={styles.pastureMap}>
     <div className={styles.mapWrapper}>
       <MapContainer
         center={[latitude, longitude]}
@@ -69,6 +70,6 @@ export default function PastureMap({
           </Popup>
         </Marker>
       </MapContainer>
-    </div>
+    </div></div>
   );
 }

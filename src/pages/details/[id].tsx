@@ -1,9 +1,13 @@
 "use client";
 
+
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import dynamic from "next/dynamic";
 import styles from "../../styles/DetailsPage.module.css";
-import PastureMap from "@/components/PastureMap";
+
+// Dynamically import PastureMap with no SSR
+const PastureMap = dynamic(() => import("@/components/PastureMap"), { ssr: false });
 
 interface Review {
   id: number;
@@ -39,18 +43,13 @@ interface Pasture {
   extraInfo: string;
 }
 
+
 export default function PastureDetails() {
   const router = useRouter();
   const { id } = router.query;
 
   const [pasture, setPasture] = useState<Pasture | null>(null);
   const [loading, setLoading] = useState(true);
-  const [mounted, setMounted] = useState(false);
-
-  // Only set mounted = true on client to avoid SSR issues with window usage in PastureMap
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   useEffect(() => {
     if (!id) return;
@@ -81,26 +80,23 @@ export default function PastureDetails() {
         <header className={styles.header}>
           <h1 className={styles.title}>{pasture.dogParkName || "Naam onbekend"}</h1>
         </header>
-
         <img
           className={styles.image}
           src={pasture.image || "/placeholder.svg"}
           alt={`Foto van ${pasture.dogParkName}`}
-          width={600}
+          width={450}
+        />
+
+         {/* PastureMap renders only client side due to dynamic import with ssr: false */}
+        <PastureMap
+          latitude={pasture.location.latitude}
+          longitude={pasture.location.longitude}
+          dogParkName={pasture.dogParkName}
+          address={pasture.address}
         />
       </div>
 
       <div className={styles.rightColumn}>
-        {/* Render map only after mounted to avoid window undefined error */}
-        {mounted && (
-          <PastureMap
-            latitude={pasture.location.latitude}
-            longitude={pasture.location.longitude}
-            dogParkName={pasture.dogParkName}
-            address={pasture.address}
-          />
-        )}
-
         <section>
           <h2 className={styles.sectionTitle}>📌 Locatie</h2>
           <table className={styles.infoTable}>
