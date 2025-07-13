@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import styles from "../../styles/DetailsPage.module.css";
+import PastureMap from "@/components/PastureMap";
 
 interface Review {
   id: number;
@@ -84,6 +85,13 @@ return (
     </div>
 
     <div className={styles.rightColumn}>
+      <PastureMap
+  latitude={pasture.location.latitude}
+  longitude={pasture.location.longitude}
+  dogParkName={pasture.dogParkName}
+  address={pasture.address}
+/>
+
       <section>
         <h2 className={styles.sectionTitle}>📌 Locatie</h2>
         <table className={styles.infoTable}>
