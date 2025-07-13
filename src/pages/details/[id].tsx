@@ -42,8 +42,15 @@ interface Pasture {
 export default function PastureDetails() {
   const router = useRouter();
   const { id } = router.query;
+
   const [pasture, setPasture] = useState<Pasture | null>(null);
   const [loading, setLoading] = useState(true);
+  const [mounted, setMounted] = useState(false);
+
+  // Only set mounted = true on client to avoid SSR issues with window usage in PastureMap
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (!id) return;
@@ -68,91 +75,91 @@ export default function PastureDetails() {
   if (loading) return <p className={styles.loading}>Laden...</p>;
   if (!pasture) return <p className={styles.error}>Hondenweide niet gevonden.</p>;
 
-return (
-  <article className={styles.container}>
-    <div className={styles.leftColumn}>
-      {/* Header + image */}
-      <header className={styles.header}>
-        <h1 className={styles.title}>{pasture.dogParkName || "Naam onbekend"}</h1>
-      </header>
+  return (
+    <article className={styles.container}>
+      <div className={styles.leftColumn}>
+        <header className={styles.header}>
+          <h1 className={styles.title}>{pasture.dogParkName || "Naam onbekend"}</h1>
+        </header>
 
-      <img
-        className={styles.image}
-        src={pasture.image || "/placeholder.svg"}
-        alt={`Foto van ${pasture.dogParkName}`}
-        width={600}
-      />
-    </div>
+        <img
+          className={styles.image}
+          src={pasture.image || "/placeholder.svg"}
+          alt={`Foto van ${pasture.dogParkName}`}
+          width={600}
+        />
+      </div>
 
-    <div className={styles.rightColumn}>
-      <PastureMap
-  latitude={pasture.location.latitude}
-  longitude={pasture.location.longitude}
-  dogParkName={pasture.dogParkName}
-  address={pasture.address}
-/>
-
-      <section>
-        <h2 className={styles.sectionTitle}>📌 Locatie</h2>
-        <table className={styles.infoTable}>
-          <tbody>
-        <p className={styles.subInfo}><span>📍</span> {pasture.area}</p>
-        <p className={styles.subInfo}><span>🏠</span> {pasture.address}</p>
-          </tbody>
-        </table>
-      </section>
-
-      <section>
-        <h2 className={styles.sectionTitle}>🌟 Details</h2>
-        <table className={styles.detailsTable}>
-          <tbody>
-            <tr><th>Grootte</th><td>{pasture.size}</td></tr>
-            <tr><th>Aantal zitbanken</th><td>{pasture.benchCount}</td></tr>
-            <tr><th>Schaduw aanwezig</th><td>{pasture.hasShade ? "🌳 Ja" : "❌ Nee"}</td></tr>
-            <tr><th>Vuilnisbak</th><td>{pasture.hasTrashbin ? "🗑️ Ja" : "❌ Nee"}</td></tr>
-            <tr><th>Drinkfontein</th><td>{pasture.hasWaterFountain ? `🚰 Ja (${pasture.waterFountainDetail})` : "❌ Nee"}</td></tr>
-            <tr><th>Waterspeelzone</th><td>{pasture.hasWaterPool ? "💧 Ja" : "❌ Nee"}</td></tr>
-            <tr><th>Parcours obstakels</th><td>{pasture.hasParkourObstacles ? "🏃‍♂️ Ja" : "❌ Nee"}</td></tr>
-            <tr><th>Verlichting in de avond</th><td>{pasture.hasEveningLight ? "💡 Ja" : "❌ Nee"}</td></tr>
-            <tr><th>Afgesloten</th><td>{pasture.isFenced ? `🚧 Ja (${pasture.fenceDetail})` : "❌ Nee"}</td></tr>
-            <tr><th>Bodemtypes</th><td>{pasture.groundTypes.length > 0 ? pasture.groundTypes.join(", ") : "Onbekend"}</td></tr>
-          </tbody>
-        </table>
-      </section>
-
-      {pasture.extraInfo && (
-        <section className={styles.extraInfo}>
-          <h2 className={styles.sectionTitle}>ℹ️ Extra informatie</h2>
-          <p>{pasture.extraInfo}</p>
-        </section>
-      )}
-
-      <section className={styles.ratingSection}>
-        <h2 className={styles.sectionTitle}>⭐ Beoordeling: {pasture.rating.toFixed(1)} / 5</h2>
-      </section>
-
-      <section>
-        <h3 className={styles.sectionTitle}>📝 Reviews</h3>
-        {pasture.reviews.length > 0 ? (
-          <ul className={styles.reviewsList}>
-            {pasture.reviews.map((review) => (
-              <li key={review.id} className={styles.reviewItem}>
-                <div className={styles.reviewHeader}>
-                  <span className={styles.reviewAvatar}>🐶</span>
-                  <strong className={styles.reviewUser}>{review.user}</strong>
-                  <span className={styles.reviewRating}> — {review.rating} / 5</span>
-                </div>
-                <p className={styles.reviewText}>{review.text}</p>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className={styles.noReviews}>Geen beoordelingen beschikbaar.</p>
+      <div className={styles.rightColumn}>
+        {/* Render map only after mounted to avoid window undefined error */}
+        {mounted && (
+          <PastureMap
+            latitude={pasture.location.latitude}
+            longitude={pasture.location.longitude}
+            dogParkName={pasture.dogParkName}
+            address={pasture.address}
+          />
         )}
-      </section>
-    </div>
-  </article>
-);
 
+        <section>
+          <h2 className={styles.sectionTitle}>📌 Locatie</h2>
+          <table className={styles.infoTable}>
+            <tbody>
+              <p className={styles.subInfo}><span>📍</span> {pasture.area}</p>
+              <p className={styles.subInfo}><span>🏠</span> {pasture.address}</p>
+            </tbody>
+          </table>
+        </section>
 
+        <section>
+          <h2 className={styles.sectionTitle}>🌟 Details</h2>
+          <table className={styles.detailsTable}>
+            <tbody>
+              <tr><th>Grootte</th><td>{pasture.size}</td></tr>
+              <tr><th>Aantal zitbanken</th><td>{pasture.benchCount}</td></tr>
+              <tr><th>Schaduw aanwezig</th><td>{pasture.hasShade ? "🌳 Ja" : "❌ Nee"}</td></tr>
+              <tr><th>Vuilnisbak</th><td>{pasture.hasTrashbin ? "🗑️ Ja" : "❌ Nee"}</td></tr>
+              <tr><th>Drinkfontein</th><td>{pasture.hasWaterFountain ? `🚰 Ja (${pasture.waterFountainDetail})` : "❌ Nee"}</td></tr>
+              <tr><th>Waterspeelzone</th><td>{pasture.hasWaterPool ? "💧 Ja" : "❌ Nee"}</td></tr>
+              <tr><th>Parcours obstakels</th><td>{pasture.hasParkourObstacles ? "🏃‍♂️ Ja" : "❌ Nee"}</td></tr>
+              <tr><th>Verlichting in de avond</th><td>{pasture.hasEveningLight ? "💡 Ja" : "❌ Nee"}</td></tr>
+              <tr><th>Afgesloten</th><td>{pasture.isFenced ? `🚧 Ja (${pasture.fenceDetail})` : "❌ Nee"}</td></tr>
+              <tr><th>Bodemtypes</th><td>{pasture.groundTypes.length > 0 ? pasture.groundTypes.join(", ") : "Onbekend"}</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        {pasture.extraInfo && (
+          <section className={styles.extraInfo}>
+            <h2 className={styles.sectionTitle}>ℹ️ Extra informatie</h2>
+            <p>{pasture.extraInfo}</p>
+          </section>
+        )}
+
+        <section className={styles.ratingSection}>
+          <h2 className={styles.sectionTitle}>⭐ Beoordeling: {pasture.rating.toFixed(1)} / 5</h2>
+        </section>
+
+        <section>
+          <h3 className={styles.sectionTitle}>📝 Reviews</h3>
+          {pasture.reviews.length > 0 ? (
+            <ul className={styles.reviewsList}>
+              {pasture.reviews.map((review) => (
+                <li key={review.id} className={styles.reviewItem}>
+                  <div className={styles.reviewHeader}>
+                    <span className={styles.reviewAvatar}>🐶</span>
+                    <strong className={styles.reviewUser}>{review.user}</strong>
+                    <span className={styles.reviewRating}> — {review.rating} / 5</span>
+                  </div>
+                  <p className={styles.reviewText}>{review.text}</p>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className={styles.noReviews}>Geen beoordelingen beschikbaar.</p>
+          )}
+        </section>
+      </div>
+    </article>
+  );
 }
