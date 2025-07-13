@@ -61,7 +61,7 @@ const parsePastureMarkers = (pastures: Pasture[]): MarkerData[] => {
 
   return pastures
     .filter((p) => p.location?.latitude && p.location?.longitude)
-    .map((pasture, idx) => {
+    .map((pasture) => {
       const amenities: string[] = [
         pasture.hasWaterFountain && "Drinkfontein",
         pasture.hasWaterPool && "Waterspeelzone",
@@ -75,7 +75,7 @@ const parsePastureMarkers = (pastures: Pasture[]): MarkerData[] => {
       ].filter(Boolean) as string[];
 
       return {
-        id: `${idx}-${pasture.address}`,
+        id: pasture._id, // use the unique id here
         position: [pasture.location.latitude, pasture.location.longitude],
         label: pasture.dogParkName || "Naam onbekend",
         address: pasture.address,
@@ -85,6 +85,7 @@ const parsePastureMarkers = (pastures: Pasture[]): MarkerData[] => {
       };
     });
 };
+
 
 const normalizePasturesData = (data: any[]): Pasture[] => {
   return data.map((p) => ({
