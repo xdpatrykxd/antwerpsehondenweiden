@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 
 interface Pasture {
+  _id:string,
   area: string;
   dogParkName: string | null;
   address: string;
@@ -87,6 +88,7 @@ const parsePastureMarkers = (pastures: Pasture[]): MarkerData[] => {
 
 const normalizePasturesData = (data: any[]): Pasture[] => {
   return data.map((p) => ({
+    _id : p._id,
     area: p.area ?? "",
     dogParkName: p.dogParkName ?? null,
     address: p.address ?? "Onbekend adres",
