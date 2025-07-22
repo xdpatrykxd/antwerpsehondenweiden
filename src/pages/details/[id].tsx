@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
 import styles from "../../styles/DetailsPage.module.css";
+import { DogLoader } from "@/components/DogLoader";
 
 // Dynamically import PastureMap with no SSR
 const PastureMap = dynamic(() => import("@/components/PastureMap"), { ssr: false });
@@ -71,7 +72,7 @@ export default function PastureDetails() {
     fetchPasture();
   }, [id]);
 
-  if (loading) return <p className={styles.loading}>Laden...</p>;
+  if (loading) return <DogLoader />;
   if (!pasture) return <p className={styles.error}>Hondenweide niet gevonden.</p>;
 
   return (

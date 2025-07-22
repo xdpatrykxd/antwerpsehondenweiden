@@ -1,3 +1,4 @@
+import { DogLoader } from "@/components/DogLoader";
 import React, { useEffect, useState } from "react";
 
 type Pasture = {
@@ -129,7 +130,7 @@ export default function AdminPanel() {
     );
   }
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <DogLoader />;
 
   return (
     <div style={{ padding: "2rem" }}>
@@ -317,6 +318,8 @@ export default function AdminPanel() {
           );
         })}
       </div>
+
+      <DogLoader />
     </div>
   );
 }

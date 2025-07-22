@@ -1,3 +1,4 @@
+import { DogLoader } from "@/components/DogLoader";
 import { useRouter } from "next/router";
 import { useEffect, useState, ChangeEvent, FormEvent } from "react";
 
@@ -254,7 +255,7 @@ export default function EditPasture() {
     }
   }
 
-  if (loading) return <p>Loading pasture data...</p>;
+  if (loading) return <DogLoader />;;
   if (saveError) return <p style={{ color: "red" }}>Error: {saveError}</p>; // Display initial fetch error prominently
 
   return (

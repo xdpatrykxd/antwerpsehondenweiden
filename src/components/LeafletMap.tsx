@@ -6,9 +6,10 @@ import L from "leaflet";
 import styles from "@/styles/Maps.module.css";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { DogLoader } from "./DogLoader";
 
 interface Pasture {
-  _id:string,
+  _id: string;
   area: string;
   dogParkName: string | null;
   address: string;
@@ -86,10 +87,9 @@ const parsePastureMarkers = (pastures: Pasture[]): MarkerData[] => {
     });
 };
 
-
 const normalizePasturesData = (data: any[]): Pasture[] => {
   return data.map((p) => ({
-    _id : p._id,
+    _id: p._id,
     area: p.area ?? "",
     dogParkName: p.dogParkName ?? null,
     address: p.address ?? "Onbekend adres",
@@ -145,7 +145,7 @@ const LeafletMap: React.FC = () => {
     fetchPastures();
   }, []);
 
-  if (loading) return <p>Loading pastures...</p>;
+  if (loading) return <DogLoader />;
   if (error) return <p>Error loading pastures: {error}</p>;
 
   return (
@@ -165,10 +165,14 @@ const LeafletMap: React.FC = () => {
               Beoordeling: {rating.toFixed(1)}
               <br />
               Voorzieningen: {amenities.join(", ")}
-              <Link href={`/details/${id}`} target="_blank" rel="noopener noreferrer" className={styles.popupLink}>
-  Bekijk details
-</Link>
-
+              <Link
+                href={`/details/${id}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.popupLink}
+              >
+                Bekijk details
+              </Link>
             </Popup>
           </Marker>
         )
