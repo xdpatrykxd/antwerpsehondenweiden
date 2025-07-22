@@ -20,12 +20,12 @@ export default function Home() {
       try {
         const res = await fetch("/api/images");
         if (!res.ok) throw new Error("Failed to fetch images");
+
         const data: string[] = await res.json();
 
-        // Map API response to your image shape
         const formattedImages = data.map((src) => ({
           src,
-          alt: "Slideshow image", // you can improve alt text here if needed
+          alt: "Slideshow image",
         }));
 
         setImages(formattedImages);
@@ -39,14 +39,6 @@ export default function Home() {
     fetchImages();
   }, []);
 
-  if (loading) {
-    return <p>Loading slideshow...</p>;
-  }
-
-  if (images.length === 0) {
-    return <p>No images found.</p>;
-  }
-
   return (
     <main className={styles.main}>
       <section className={styles.intro}>
@@ -58,7 +50,13 @@ export default function Home() {
       </section>
 
       <section className={styles.slideshowSection}>
-        <Slideshow images={images} />
+        {loading ? (
+          <p>Loading slideshow...</p>
+        ) : images.length > 0 ? (
+          <Slideshow images={images} />
+        ) : (
+          <p>No images found.</p>
+        )}
       </section>
 
       <Footer />
