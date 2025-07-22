@@ -4,7 +4,10 @@ import { ObjectId } from "mongodb";
 import fs from "fs";
 import path from "path";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   const client = await clientPromise;
   const db = client.db("Antwerpse-Hondenweiden");
   const pastures = db.collection("pastures");
@@ -31,7 +34,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const updatedPasture = req.body;
 
       if (!updatedPasture || typeof updatedPasture !== "object") {
-        return res.status(400).json({ error: "Expected pasture data in body." });
+        return res
+          .status(400)
+          .json({ error: "Expected pasture data in body." });
       }
 
       try {
@@ -59,14 +64,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           return res.status(404).json({ error: "Pasture not found." });
         }
 
-        const picturesFolderPath = path.join(process.cwd(), "pictures", id);
-
-        // Delete pictures folder asynchronously, log errors but don't block response
-        fs.rmdir(picturesFolderPath, { recursive: true }, (err) => {
-          if (err) {
-            console.error("Failed to delete pictures folder:", err);
+        // Call /api/pictures to delete folder by pasture ID
+        const response = await fetch(
+          `http://localhost:3000/api/pictures?folderName=${id}`,
+          {
+            method: "DELETE",
           }
-        });
+        );
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          console.error("Failed to delete pictures folder via API:", errorData);
+          // You may choose to fail the deletion or continue here
+        }
 
         return res.status(200).json({ message: "Pasture deleted." });
       } catch (e) {
