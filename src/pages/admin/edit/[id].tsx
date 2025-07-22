@@ -16,13 +16,14 @@ type Pasture = {
   hasShade: boolean;
   hasTrashbin: boolean;
   hasWaterFountain: boolean;
-  waterFountainDetail: string;
+  waterFountainDetail: string | null;
   hasWaterPool: boolean;
   hasParkourObstacles: boolean;
   hasEveningLight: boolean;
   isFenced: boolean;
   fenceDetail: string;
   groundTypes: string[];
+  reviews: any[];
   rating: number;
   extraInfo: string;
 };
@@ -49,6 +50,7 @@ export default function EditPasture() {
     isFenced: false,
     fenceDetail: "",
     groundTypes: [],
+    reviews: [],
     rating: 0,
     extraInfo: "",
   });
@@ -633,7 +635,7 @@ export default function EditPasture() {
           Water Fountain Detail:
           <input
             name="waterFountainDetail"
-            value={pasture.waterFountainDetail}
+            value={pasture.waterFountainDetail ?? ""}
             onChange={handleChange}
             disabled={!pasture.hasWaterFountain}
             placeholder={
