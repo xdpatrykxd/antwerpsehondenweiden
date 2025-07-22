@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Slideshow } from "@/components/Slideshow";
 import styles from "../styles/Home.module.css";
 import { Footer } from "@/components/Footer";
+import { DogLoader } from "@/components/DogLoader";
 
 interface ImageType {
   src: string;
@@ -51,7 +52,7 @@ export default function Home() {
 
       <section className={styles.slideshowSection}>
         {loading ? (
-          <p>Loading slideshow...</p>
+          <DogLoader/>
         ) : images.length > 0 ? (
           <Slideshow images={images} />
         ) : (
