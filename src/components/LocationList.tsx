@@ -54,6 +54,8 @@ export function LocationList() {
   const [pasturesRaw, setPasturesRaw] = useState<any[]>([]);
   const [selectedArea, setSelectedArea] = useState<string>("Alle gebieden");
   const [activeFilters, setActiveFilters] = useState<FilterKey[]>([]);
+  const [showLocationTabs, setShowLocationTabs] = useState(false);
+  const [showFilters, setShowFilters] = useState(false);
 
   useEffect(() => {
     async function fetchPastures() {
@@ -121,9 +123,26 @@ export function LocationList() {
     activeFilters.every((key) => pasture[key])
   );
 
-  return (
-    <div className={styles.container}>
-      <div className={styles.topMenu}>
+return (
+  <div className={styles.container}>
+    <div className={styles.topMenu}>
+      <div className={styles.topButtons}>
+        <button
+          onClick={() => setShowLocationTabs((prev) => !prev)}
+          className={styles.toggleButton}
+        >
+          {showLocationTabs ? "Sluit locaties" : "Locaties"}
+        </button>
+
+        <button
+          onClick={() => setShowFilters((prev) => !prev)}
+          className={styles.toggleButton}
+        >
+          {showFilters ? "Sluit filters" : "Filter"}
+        </button>
+      </div>
+
+      {showLocationTabs && (
         <div className={styles.locationTabs}>
           {areas.map((area) => (
             <button
@@ -137,7 +156,9 @@ export function LocationList() {
             </button>
           ))}
         </div>
+      )}
 
+      {showFilters && (
         <div className={styles.filters}>
           {FILTER_OPTIONS.map(({ key, label }) => (
             <label key={key} className={styles.filterCheckbox}>
@@ -150,28 +171,35 @@ export function LocationList() {
             </label>
           ))}
         </div>
-      </div>
-
-      <div className={styles.content}>
-        {filteredPastures.length > 0 ? (
-          <div className={styles.zoneContent}>
-            <h2 className={styles.zoneTitle}>
-              Hondenzones in{" "}
-              {selectedArea === "Alle gebieden" ? "alle gebieden" : selectedArea}
-            </h2>
-            <div className={styles.zoneGrid}>
-              {filteredPastures.map((pasture) => (
-                <ZoneCard key={pasture._id || pasture.dogParkName} zone={pasture} />
-              ))}
-            </div>
-          </div>
-        ) : (
-          <div className={styles.emptyState}>
-            <h3>Geen hondenzones beschikbaar</h3>
-            <p>Pas je filters aan of kies een andere locatie</p>
-          </div>
-        )}
-      </div>
+      )}
     </div>
-  );
+
+    <div className={styles.content}>
+      {filteredPastures.length > 0 ? (
+        <div className={styles.zoneContent}>
+          <h2 className={styles.zoneTitle}>
+            Hondenzones in{" "}
+            {selectedArea === "Alle gebieden"
+              ? "alle gebieden"
+              : selectedArea}
+          </h2>
+          <div className={styles.zoneGrid}>
+            {filteredPastures.map((pasture) => (
+              <ZoneCard
+                key={pasture._id || pasture.dogParkName}
+                zone={pasture}
+              />
+            ))}
+          </div>
+        </div>
+      ) : (
+        <div className={styles.emptyState}>
+          <h3>Geen hondenzones beschikbaar</h3>
+          <p>Pas je filters aan of kies een andere locatie</p>
+        </div>
+      )}
+    </div>
+  </div>
+);
+
 }
