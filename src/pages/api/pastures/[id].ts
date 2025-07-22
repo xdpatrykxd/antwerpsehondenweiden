@@ -59,28 +59,29 @@ export default async function handler(
 
     case "DELETE": {
       try {
+        // Delete pasture in DB
         const result = await pastures.deleteOne({ _id: new ObjectId(id) });
         if (result.deletedCount === 0) {
           return res.status(404).json({ error: "Pasture not found." });
         }
 
-        // Call /api/pictures to delete folder by pasture ID
-        const response = await fetch(
-          `http://localhost:3000/api/pictures?folderName=${id}`,
-          {
-            method: "DELETE",
+        // Call internal API to delete images folder
+        const imagesApiUrl = `${
+          process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
+        }/api/images?folderName=${id}`;
+        try {
+          const response = await fetch(imagesApiUrl, { method: "DELETE" });
+          if (!response.ok) {
+            const data = await response.json();
+            console.error("Failed to delete images folder:", data.error);
           }
-        );
-
-        if (!response.ok) {
-          const errorData = await response.json();
-          console.error("Failed to delete pictures folder via API:", errorData);
-          // You may choose to fail the deletion or continue here
+        } catch (err) {
+          console.error("Error calling DELETE /api/images:", err);
         }
 
         return res.status(200).json({ message: "Pasture deleted." });
-      } catch (e) {
-        return res.status(400).json({ error: "Invalid ID format." });
+      } catch (err) {
+        return res.status(500).json({ error: "Server error." });
       }
     }
 
