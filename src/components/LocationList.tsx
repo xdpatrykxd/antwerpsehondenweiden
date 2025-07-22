@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ZoneCard } from "./ZoneCard";
 import styles from "../styles/LocationList.module.css";
 
@@ -113,6 +113,7 @@ export function LocationList() {
       prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]
     );
   };
+const resultsRef = useRef<HTMLDivElement | null>(null);
 
   const pasturesInArea =
     selectedArea === "Alle gebieden"
@@ -150,7 +151,13 @@ return (
               className={`${styles.tabButton} ${
                 selectedArea === area ? styles.activeTab : ""
               }`}
-              onClick={() => setSelectedArea(area)}
+             onClick={() => {
+  setSelectedArea(area);
+  setTimeout(() => {
+    resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, 100); // Small delay to ensure content is rendered
+}}
+
             >
               {area}
             </button>
@@ -174,7 +181,7 @@ return (
       )}
     </div>
 
-    <div className={styles.content}>
+    <div className={styles.content} ref={resultsRef}>
       {filteredPastures.length > 0 ? (
         <div className={styles.zoneContent}>
           <h2 className={styles.zoneTitle}>
